@@ -1,4 +1,4 @@
-name: Deploy & Publish Image
+name: Deploy
 
 on:
   push:
