@@ -1,0 +1,40 @@
+name: Optimize Images
+
+on:
+  workflow_dispatch:
+    push:
+      branches: [ "master" ]
+      paths:
+        - '**.jpg'
+        - '**.jpeg'
+        - '**.png'
+        - '**.webp'
+
+jobs:
+  optimize:
+    runs-on: "self-hosted"
+
+    # Steps to run
+    steps:
+      # Checkout the repo
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Compress
+      - name: Deploy to Dokku
+        id: calibre
+        uses: calibreapp/image-actions@main
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          compressOnly: true
+
+      - name: Create New Pull Request
+        if: steps.calibre.outputs.markdown != ''
+        uses: peter-evans/create-pull-request@v4
+        with:
+          title: Compressed Images
+          branch-suffix: timestamp
+          commit-message: Compressed Images
+          body: ${{ steps.calibre.outputs.markdown }}

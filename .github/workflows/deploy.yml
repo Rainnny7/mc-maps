@@ -9,11 +9,7 @@ on:
 
 jobs:
   deploy:
-    strategy:
-      matrix:
-        arch: [ "self-hosted" ]
-        git-version: [ "2.44.0" ]
-    runs-on: ${{ matrix.arch }}
+    runs-on: "self-hosted"
 
     # Steps to run
     steps:
