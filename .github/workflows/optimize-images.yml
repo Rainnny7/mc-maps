@@ -12,7 +12,7 @@ on:
 
 jobs:
   optimize:
-    runs-on: "self-hosted"
+    runs-on: "ubuntu-latest"
 
     # Steps to run
     steps:
