@@ -35,6 +35,9 @@ COPY --from=builder --chown=nextjs:nextjs /usr/src/app/package.json ./package.js
 
 ENV NODE_ENV=production
 
+ARG MONGODB_URI
+ENV MONGODB_URI=${MONGODB_URI}
+
 # Exposting on port 80 so we can
 # access via a reverse proxy for Dokku
 ENV HOSTNAME="0.0.0.0"

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
         template: "%s • MC Maps",
     },
     description:
-        " Discover, download, and explore Minecraft maps from your favorite servers! ",
+        "Discover, download, and explore Minecraft maps from your favorite servers! ",
     openGraph: {
         images: [
             {

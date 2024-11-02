@@ -4,6 +4,7 @@ import { ReactElement } from "react";
 import Image from "next/image";
 import { getServerBanner, getServerLogo } from "@/lib/media";
 import Link from "next/link";
+import ServerLogo from "@/components/server/server-logo";
 
 const ServerList = async (): Promise<ReactElement> => {
     await connectMongo();
@@ -26,12 +27,7 @@ const ServerList = async (): Promise<ReactElement> => {
                             height={332}
                         />
                         <div className="absolute left-3.5 inset-y-0 flex gap-2.5 items-center">
-                            <Image
-                                src={getServerLogo(server)}
-                                alt={`Logo for ${server.name}`}
-                                width={48}
-                                height={48}
-                            />
+                            <ServerLogo server={server} />
                             <h1 className="text-2xl font-bold">
                                 {server.name}
                             </h1>
