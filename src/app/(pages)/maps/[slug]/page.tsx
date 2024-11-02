@@ -1,10 +1,9 @@
 import { ReactElement } from "react";
 import { connectMongo } from "@/lib/mongo";
-import { MinecraftServerDocument, MinecraftServerModel } from "@/model/server";
+import { MinecraftServerDocument, MinecraftServerModel } from "@/models/server";
 import { notFound } from "next/navigation";
-import { getServerLogo } from "@/lib/media";
-import Image from "next/image";
 import ServerLogo from "@/components/server/server-logo";
+import MapList from "@/components/map/map-list";
 
 const MapsPage = async ({
     params,
@@ -20,7 +19,7 @@ const MapsPage = async ({
     }
 
     return (
-        <main className="mt-40 flex flex-col gap-7 items-center">
+        <main className="mt-32 flex flex-col gap-7 items-center">
             {/* Header */}
             <div className="flex flex-col gap-1 text-center items-center">
                 <h1 className="text-4xl xs:text-5xl flex gap-4 items-center font-bold text-primary">
@@ -33,7 +32,7 @@ const MapsPage = async ({
             </div>
 
             {/* Content */}
-            <div>Maps (:</div>
+            <MapList server={server} />
         </main>
     );
 };

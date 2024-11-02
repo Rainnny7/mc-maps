@@ -44,6 +44,7 @@ const Navbar = (): ReactElement => (
                         alt="MC Maps Logo"
                         width={42}
                         height={42}
+                        draggable={false}
                     />
                     <h1 className="hidden sm:flex text-xl font-bold text-primary">
                         MC Maps

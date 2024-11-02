@@ -1,4 +1,4 @@
-import { MinecraftServerDocument } from "@/model/server";
+import { MinecraftServerDocument } from "@/models/server";
 import { getServerLogo } from "@/lib/media";
 import Image from "next/image";
 
@@ -8,6 +8,7 @@ const ServerLogo = ({ server }: { server: MinecraftServerDocument }) => (
         alt={`Logo for ${server.name}`}
         width={48}
         height={48}
+        draggable={false}
     />
 );
 export default ServerLogo;

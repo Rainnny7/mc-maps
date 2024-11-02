@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./style/globals.css";
 import { ReactElement, ReactNode } from "react";
 import Navbar from "@/components/navbar";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
@@ -48,10 +49,12 @@ const RootLayout = async ({
         <body
             className={`px-3 xs:px-5 w-screen min-h-screen flex flex-col items-center bg-gradient-to-b from-background via-[#1a1a1a] to-background ${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased select-none`}
         >
-            <Navbar />
-            <div className="w-full h-[calc(100vh-var(--navbar-height))] max-w-screen-xl">
-                {children}
-            </div>
+            <TooltipProvider delayDuration={100}>
+                <Navbar />
+                <div className="w-full h-[calc(100vh-var(--navbar-height))] max-w-screen-xl">
+                    {children}
+                </div>
+            </TooltipProvider>
         </body>
     </html>
 );
