@@ -30,6 +30,9 @@ ENV S3_ACCESS_KEY=${S3_ACCESS_KEY}
 ARG S3_SECRET_KEY
 ENV S3_SECRET_KEY=${S3_SECRET_KEY}
 
+ARG S3_USE_SSL
+ENV S3_USE_SSL=${S3_USE_SSL}
+
 RUN bun run build
 
 
@@ -65,6 +68,9 @@ ENV S3_ACCESS_KEY=${S3_ACCESS_KEY}
 
 ARG S3_SECRET_KEY
 ENV S3_SECRET_KEY=${S3_SECRET_KEY}
+
+ARG S3_USE_SSL
+ENV S3_USE_SSL=${S3_USE_SSL}
 
 # Exposting on port 80 so we can
 # access via a reverse proxy for Dokku

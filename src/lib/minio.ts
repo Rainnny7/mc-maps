@@ -16,7 +16,7 @@ export const s3Client = new Client({
     port: process.env.S3_PORT ? Number(process.env.S3_PORT) : undefined,
     accessKey: S3_ACCESS_KEY,
     secretKey: S3_SECRET_KEY,
-    useSSL: process.env.S3_USE_SSL !== "true",
+    useSSL: process.env.S3_USE_SSL !== "false",
 });
 
 /**
