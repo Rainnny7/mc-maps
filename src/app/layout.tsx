@@ -47,7 +47,7 @@ const RootLayout = async ({
 }>): Promise<ReactElement> => (
     <html lang="en" suppressHydrationWarning>
         <body
-            className={`px-3 xs:px-5 w-screen min-h-screen flex flex-col items-center bg-gradient-to-b from-background via-[#1a1a1a] to-background ${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased select-none`}
+            className={`px-3 xs:px-5 w-screen min-h-screen flex flex-col items-center bg-gradient-to-b from-background via-[#141414] to-background ${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased select-none`}
         >
             <TooltipProvider delayDuration={100}>
                 <Navbar />

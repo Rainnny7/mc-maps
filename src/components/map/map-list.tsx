@@ -23,7 +23,7 @@ const MapList = async ({
             {maps.map((map: MinecraftMapDocument) => (
                 <SimpleTooltip key={map.id} content="Click to view">
                     <Link
-                        className="group relative border border-muted rounded-xl overflow-hidden"
+                        className="group relative h-44 border border-muted rounded-xl overflow-hidden"
                         href={`/map/${server.id}/${map.id}`}
                         draggable={false}
                     >
