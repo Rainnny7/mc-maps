@@ -24,7 +24,7 @@ const MapList = async ({
                 <SimpleTooltip key={map.id} content="Click to view">
                     <Link
                         className="group relative border border-muted rounded-xl overflow-hidden"
-                        href={`/maps/${server.id}/${map.id}`}
+                        href={`/map/${server.id}/${map.id}`}
                         draggable={false}
                     >
                         {/* Thumbnail */}

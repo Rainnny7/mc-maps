@@ -16,19 +16,19 @@ const ServerList = async (): Promise<ReactElement> => {
                 return (
                     <Link
                         key={server.id}
-                        className="relative hover:opacity-75 transition-all transform-gpu"
+                        className="group relative rounded-xl hover:opacity-75 transition-all transform-gpu overflow-hidden"
                         href={`/maps/${server.id}`}
                         draggable={false}
                     >
                         <Image
                             src={getServerBanner(server)}
-                            className="rounded-xl blur-[1px] border border-muted opacity-50 transition-all transform-gpu"
+                            className="rounded-xl blur-[1px] border border-muted opacity-50 group-hover:scale-[1.02] transition-all transform-gpu"
                             alt={`Banner art for ${server.name}`}
                             width={332}
                             height={332}
                             draggable={false}
                         />
-                        <div className="absolute left-3.5 inset-y-0 flex gap-2.5 items-center">
+                        <div className="absolute left-3.5 inset-y-0 flex gap-2.5 items-center group-hover:scale-[1.02]">
                             <ServerLogo server={server} />
                             <h1 className="text-2xl font-bold">
                                 {server.name}

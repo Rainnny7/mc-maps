@@ -2,21 +2,31 @@ import { ReactElement } from "react";
 import { connectMongo } from "@/lib/mongo";
 import { MinecraftServerDocument, MinecraftServerModel } from "@/models/server";
 import { notFound } from "next/navigation";
-import ServerLogo from "@/components/server/server-logo";
-import MapList from "@/components/map/map-list";
+import { MinecraftMapDocument, MinecraftMapModel } from "@/models/map";
 import Link from "next/link";
-import { ChevronLeft, ChevronLeftCircle } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
+import MapPreviewCarousel from "@/components/map/map-preview-carousel";
 
-const MapsPage = async ({
+const MapPage = async ({
     params,
 }: {
-    params: Promise<{ slug: string }>;
+    params: Promise<{ slug: string[] }>;
 }): Promise<ReactElement> => {
     const slug = (await params).slug;
+    if (slug.length !== 2) {
+        notFound();
+    }
     await connectMongo();
     const server: MinecraftServerDocument | null =
-        await MinecraftServerModel.findOne({ _id: slug });
-    if (!server) {
+        await MinecraftServerModel.findOne({ _id: slug[0] });
+    let map: MinecraftMapDocument | null;
+    if (
+        !server ||
+        !(map = await MinecraftMapModel.findOne({
+            _id: slug[1],
+            owner: server.id,
+        }))
+    ) {
         notFound();
     }
 
@@ -31,21 +41,22 @@ const MapsPage = async ({
                     draggable={false}
                 >
                     <ChevronLeft className="size-5 group-hover:-translate-x-0.5 transition-all transform-gpu" />
-                    <span>Back to Servers</span>
+                    <span>Back to Maps</span>
                 </Link>
 
                 <h1 className="text-4xl xs:text-5xl flex gap-4 items-center font-bold text-primary">
-                    <ServerLogo server={server} />
-                    <span>{server.name} Maps</span>
+                    {map.name}
                 </h1>
-                <p className="max-w-lg text-lg xs:text-xl opacity-75">
-                    Browse through our collection of maps for {server.name}.
+                <p className="max-w-2xl text-lg xs:text-xl opacity-75">
+                    {map.description}
                 </p>
             </div>
 
             {/* Content */}
-            <MapList server={server} />
+            <div className="flex flex-col">
+                <MapPreviewCarousel />
+            </div>
         </main>
     );
 };
-export default MapsPage;
+export default MapPage;
