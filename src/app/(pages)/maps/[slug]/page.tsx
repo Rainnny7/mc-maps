@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import ServerLogo from "@/components/server/server-logo";
 import MapList from "@/components/map/map-list";
 import Link from "next/link";
-import { ChevronLeft, ChevronLeftCircle } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 
 const MapsPage = async ({
     params,

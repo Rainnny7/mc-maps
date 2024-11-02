@@ -6,7 +6,7 @@ import {
     Severity,
 } from "@typegoose/typegoose";
 import mongoose from "mongoose";
-import { ServerPlatform } from "@/types/server-platform";
+import { type ServerPlatform } from "@/types/server-platform";
 
 @modelOptions({
     schemaOptions: { collection: "maps" },
@@ -22,7 +22,7 @@ class MinecraftMap {
     @prop()
     public description?: string | undefined;
 
-    @prop({ type: String })
+    @prop()
     public platform!: ServerPlatform;
 
     @prop()
@@ -36,6 +36,12 @@ class MinecraftMap {
      */
     @prop()
     public owner!: string;
+
+    @prop()
+    public uploadedBy!: string;
+
+    @prop()
+    public uploadedAt: Date = new Date();
 
     get id(): string {
         return this._id;

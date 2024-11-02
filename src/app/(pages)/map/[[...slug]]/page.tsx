@@ -6,6 +6,7 @@ import { MinecraftMapDocument, MinecraftMapModel } from "@/models/map";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import MapPreviewCarousel from "@/components/map/map-preview-carousel";
+import { DateTime } from "luxon";
 
 const MapPage = async ({
     params,
@@ -44,17 +45,25 @@ const MapPage = async ({
                     <span>Back to Maps</span>
                 </Link>
 
-                <h1 className="text-4xl xs:text-5xl flex gap-4 items-center font-bold text-primary">
+                <h1 className="text-4xl md:text-5xl flex gap-4 items-center font-bold text-primary">
                     {map.name}
                 </h1>
-                <p className="max-w-2xl text-lg xs:text-xl opacity-75">
+                <p className="max-w-2xl text-lg md:text-xl opacity-75">
                     {map.description}
                 </p>
+
+                {/* Uploader */}
+                <span className="opacity-75">
+                    Uploaded by {map.uploadedBy} -{" "}
+                    {DateTime.fromISO(
+                        map.uploadedAt.toISOString()
+                    ).toRelative()}
+                </span>
             </div>
 
             {/* Content */}
             <div className="flex flex-col">
-                <MapPreviewCarousel />
+                <MapPreviewCarousel server={server} map={map} />
             </div>
         </main>
     );

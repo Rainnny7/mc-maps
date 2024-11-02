@@ -26,7 +26,7 @@ const BrowseMapsPage = (): ReactElement => (
         {/* Content */}
         <div className="flex flex-wrap flex-col sm:flex-row gap-4 justify-center items-center">
             <Suspense
-                fallback={Array(4)
+                fallback={Array(3)
                     .fill(0)
                     .map((_, i) => (
                         <Skeleton key={i} className="w-96 h-20 rounded-xl" />
