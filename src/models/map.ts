@@ -7,10 +7,13 @@ import {
 } from "@typegoose/typegoose";
 import mongoose from "mongoose";
 import { type ServerPlatform } from "@/types/server-platform";
+import { MinecraftServerDocument } from "@/models/server";
+import { BucketItem } from "minio";
+import { s3Client } from "@/lib/minio";
 
 @modelOptions({
+    options: { customName: "MinecraftMap", allowMixed: Severity.ALLOW },
     schemaOptions: { collection: "maps" },
-    options: { allowMixed: Severity.ALLOW },
 })
 class MinecraftMap {
     @prop()
@@ -43,8 +46,41 @@ class MinecraftMap {
     @prop()
     public uploadedAt: Date = new Date();
 
+    /**
+     * Get the ID of this map.
+     */
     get id(): string {
         return this._id;
+    }
+
+    /**
+     * Get the URL to download this map.
+     *
+     * @param server the server the map belongs to
+     */
+    public getDownloadUrl(
+        this: MinecraftMapDocument,
+        server: MinecraftServerDocument
+    ): string {
+        return `https://s3.rainnny.club/mcmap-maps/${server.id}/${this._id}/map.zip`;
+    }
+
+    public async getPreviews(
+        this: MinecraftMapDocument,
+        server: MinecraftServerDocument
+    ): Promise<BucketItem[]> {
+        return new Promise<BucketItem[]>((resolve, reject) => {
+            const items: BucketItem[] = [];
+
+            const previewsStream = s3Client.listObjectsV2(
+                "mcmap-maps",
+                `${server.id}/${this._id}/previews/`,
+                false
+            );
+            previewsStream.on("data", (item: BucketItem) => items.push(item));
+            previewsStream.on("end", () => resolve(items));
+            previewsStream.on("error", (err: Error) => reject(err));
+        });
     }
 }
 

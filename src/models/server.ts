@@ -8,8 +8,8 @@ import {
 import mongoose from "mongoose";
 
 @modelOptions({
+    options: { customName: "MinecraftServer", allowMixed: Severity.ALLOW },
     schemaOptions: { collection: "servers" },
-    options: { allowMixed: Severity.ALLOW },
 })
 class MinecraftServer {
     @prop()
@@ -23,8 +23,25 @@ class MinecraftServer {
         [key: string]: string;
     };
 
+    /**
+     * Get the ID of this server.
+     */
     get id(): string {
         return this._id;
+    }
+
+    /**
+     * Get the logo of this server.
+     */
+    public getLogo(this: MinecraftServerDocument): string {
+        return `https://s3.rainnny.club/mcmap-servers/${this._id}/logo.png`;
+    }
+
+    /**
+     * Get the banner art of this server.
+     */
+    public getBanner(this: MinecraftServerDocument): string {
+        return `https://s3.rainnny.club/mcmap-servers/${this._id}/banner.png`;
     }
 }
 

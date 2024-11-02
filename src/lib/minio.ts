@@ -1,6 +1,4 @@
-import { BucketItem, Client } from "minio";
-import { MinecraftMapDocument } from "@/models/map";
-import { MinecraftServerDocument } from "@/models/server";
+import { Client } from "minio";
 
 const S3_ENDPOINT: string | undefined = process.env.S3_ENDPOINT;
 const S3_ACCESS_KEY: string | undefined = process.env.S3_ACCESS_KEY;
@@ -18,26 +16,3 @@ export const s3Client = new Client({
     secretKey: S3_SECRET_KEY,
     useSSL: process.env.S3_USE_SSL !== "false",
 });
-
-/**
- * Get the preview images for a map.
- *
- * @param server the server the map belongs to
- * @param map the map
- */
-export const getMapPreviews = async (
-    server: MinecraftServerDocument,
-    map: MinecraftMapDocument
-): Promise<BucketItem[]> =>
-    new Promise<BucketItem[]>((resolve, reject) => {
-        const items: BucketItem[] = [];
-
-        const previewsStream = s3Client.listObjectsV2(
-            "mcmap-maps",
-            `${server.id}/${map.id}/previews/`,
-            false
-        );
-        previewsStream.on("data", (item: BucketItem) => items.push(item));
-        previewsStream.on("end", () => resolve(items));
-        previewsStream.on("error", (err: Error) => reject(err));
-    });

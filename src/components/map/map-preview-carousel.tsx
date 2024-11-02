@@ -1,5 +1,4 @@
 import { ReactElement } from "react";
-import { getMapPreviews } from "@/lib/minio";
 import { BucketItem } from "minio";
 import { MinecraftServerDocument } from "@/models/server";
 import { MinecraftMapDocument } from "@/models/map";
@@ -19,7 +18,7 @@ const MapPreviewCarousel = async ({
     server: MinecraftServerDocument;
     map: MinecraftMapDocument;
 }): Promise<ReactElement> => {
-    const previews: BucketItem[] = await getMapPreviews(server, map);
+    const previews: BucketItem[] = await map.getPreviews(server);
 
     return previews.length < 1 ? (
         <span className="text-xl text-red-500">

@@ -10,8 +10,5 @@ const nextConfig: NextConfig = {
             },
         ],
     },
-    experimental: {
-        serverMinification: false,
-    },
 };
 export default nextConfig;
