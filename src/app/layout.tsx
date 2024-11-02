@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "./style/globals.css";
 import { ReactElement, ReactNode } from "react";
-import { ThemeProvider } from "next-themes";
+import Navbar from "@/components/navbar";
 
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
@@ -46,11 +46,12 @@ const RootLayout = async ({
 }>): Promise<ReactElement> => (
     <html lang="en" suppressHydrationWarning>
         <body
-            className={`${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased`}
+            className={`px-3 xs:px-5 w-screen min-h-screen flex flex-col items-center bg-gradient-to-b from-background via-[#1a1a1a] to-background ${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased select-none`}
         >
-            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            <Navbar />
+            <div className="w-full h-[calc(100vh-var(--navbar-height))] max-w-screen-xl">
                 {children}
-            </ThemeProvider>
+            </div>
         </body>
     </html>
 );

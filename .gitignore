@@ -3,7 +3,7 @@ node_modules
 .vscode/
 .VSCodeCounter/
 .next/
-.env*.local
+.env
 next-env.d.ts
 .sentryclirc
 sw.*
