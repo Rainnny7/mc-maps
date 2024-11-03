@@ -11,7 +11,7 @@ import {
     MinecraftMapModel,
 } from "@/models/map";
 import ServerLogo from "@/components/server/server-logo";
-import MapsSidebar from "@/components/maps/sidebar";
+import MapsSidebar from "@/components/maps/sidebar/sidebar";
 
 const MapsPage = async ({
     params,

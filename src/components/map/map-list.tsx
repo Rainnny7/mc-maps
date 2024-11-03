@@ -4,12 +4,12 @@ import { ReactElement } from "react";
 import { MinecraftMap } from "@/models/map";
 import Link from "next/link";
 import Image from "next/image";
-import { ServerPlatform } from "@/types/server-platform";
 import SimpleTooltip from "@/components/simple-tooltip";
 import { capitalize } from "@/lib/string";
 import { MinecraftServer } from "@/models/server";
 import { useMapsFilter } from "@/providers/maps-filter-provider";
 import { DateTime } from "luxon";
+import ServerPlatformLogo from "@/components/server/server-platform-logo";
 
 const MapList = ({
     server,
@@ -18,10 +18,14 @@ const MapList = ({
     server: MinecraftServer;
     maps: MinecraftMap[];
 }): ReactElement => {
-    const { filteredPlatform, filteredTags, filteredYears } = useMapsFilter();
+    const { searchQuery, filteredPlatform, filteredTags, filteredYears } =
+        useMapsFilter();
 
     // Filter the maps based on the user's filters
     maps = maps.filter((map: MinecraftMap) => {
+        const searchMatch =
+            !searchQuery ||
+            map.name.toLowerCase().includes(searchQuery.toLowerCase());
         const platformMatch =
             !filteredPlatform || map.platform === filteredPlatform;
         const tagsMatch =
@@ -30,7 +34,7 @@ const MapList = ({
         const yearsMatch =
             !filteredYears ||
             (map.year >= filteredYears[0] && map.year <= filteredYears[1]);
-        return platformMatch && tagsMatch && yearsMatch;
+        return searchMatch && platformMatch && tagsMatch && yearsMatch;
     });
 
     return maps.length < 1 ? (
@@ -64,11 +68,8 @@ const MapList = ({
                                 <SimpleTooltip
                                     content={`${capitalize(map.platform)} Edition`}
                                 >
-                                    <Image
-                                        src={`/media/blocks/${map.platform === ServerPlatform.Java ? "grass" : "bedrock"}.png`}
-                                        alt="sdfs"
-                                        width={20}
-                                        height={20}
+                                    <ServerPlatformLogo
+                                        platform={map.platform}
                                     />
                                 </SimpleTooltip>
                                 <span>{map.name}</span>
@@ -81,7 +82,7 @@ const MapList = ({
                                     <span className="font-semibold">
                                         {map.uploadedBy}
                                     </span>
-                                    🞄
+                                    <span className="p-px bg-white rounded-full" />
                                     <span>
                                         {DateTime.fromISO(
                                             map.uploadedAt.toISOString()
@@ -89,7 +90,7 @@ const MapList = ({
                                     </span>
                                 </p>
 
-                                {/* Stats */}
+                                {/* TODO: Stats */}
                                 <div className="flex gap-3 items-center justify-end text-sm opacity-65">
                                     <span>0 Downloads</span>
                                 </div>

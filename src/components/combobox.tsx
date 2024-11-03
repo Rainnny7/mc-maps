@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -59,7 +59,7 @@ export type ComboboxItem<T> = {
     /**
      * The name of this item.
      */
-    name: string;
+    name: string | ReactNode;
 };
 
 const Combobox = <T,>({
@@ -114,9 +114,9 @@ const Combobox = <T,>({
                         <CommandList>
                             <CommandEmpty>No results found.</CommandEmpty>
                             <CommandGroup>
-                                {items.map((item) => (
+                                {items.map((item, index) => (
                                     <CommandItem
-                                        key={item.name}
+                                        key={index}
                                         value={item.value as string}
                                         onSelect={(currentValue) => {
                                             const current = currentValue as T;
@@ -136,7 +136,9 @@ const Combobox = <T,>({
                                                     : "opacity-0"
                                             )}
                                         />
-                                        {item.name}
+                                        <div className="flex gap-2 items-center">
+                                            {item.name}
+                                        </div>
                                     </CommandItem>
                                 ))}
                             </CommandGroup>

@@ -13,6 +13,9 @@ import { ServerPlatform } from "@/types/server-platform";
  * The props for the filter context.
  */
 interface FilterContextProps {
+    searchQuery: string;
+    search: (query: string) => void;
+
     filteredPlatform: ServerPlatform | undefined;
     filterPlatform: (platform: ServerPlatform | undefined) => void;
 
@@ -37,6 +40,7 @@ export const MapsFilterProvider = ({
     children: ReactNode;
 }): ReactElement => {
     // Create the states
+    const [searchQuery, setSearchQuery] = useState<string>("");
     const [filteredPlatform, setFilteredPlatform] = useState<
         ServerPlatform | undefined
     >(undefined);
@@ -48,6 +52,7 @@ export const MapsFilterProvider = ({
     );
 
     // Create the filter functions
+    const search = (query: string) => setSearchQuery(query);
     const filterPlatform = (platform: ServerPlatform | undefined) =>
         setFilteredPlatform(platform);
     const filterTags = (tags: string[] | undefined) => setFilteredTags(tags);
@@ -55,6 +60,7 @@ export const MapsFilterProvider = ({
         setFilteredYears(years);
 
     const clearFilters = () => {
+        setSearchQuery("");
         setFilteredPlatform(undefined);
         setFilteredTags(undefined);
         setFilteredYears(undefined);
@@ -64,6 +70,8 @@ export const MapsFilterProvider = ({
     return (
         <FilterContext.Provider
             value={{
+                searchQuery,
+                search,
                 filteredPlatform,
                 filterPlatform,
                 filteredTags,
