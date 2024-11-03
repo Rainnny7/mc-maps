@@ -8,6 +8,8 @@ import { ChevronLeft } from "lucide-react";
 import MapPreviewCarousel from "@/components/map/map-preview-carousel";
 import { DateTime } from "luxon";
 import ServerLogo from "@/components/server/server-logo";
+import FileDownloadButton from "@/components/file-download-button";
+import MapStats from "@/components/map/map-stats";
 
 const MapPage = async ({
     params,
@@ -33,7 +35,7 @@ const MapPage = async ({
     }
 
     return (
-        <main className="mt-20 flex flex-col gap-7 items-center">
+        <main className="mt-10 flex flex-col gap-7 items-center">
             {/* Header */}
             <div className="flex flex-col gap-1 text-center items-center">
                 {/* Go Back */}
@@ -52,15 +54,15 @@ const MapPage = async ({
                     />
                 </Link>
 
-                <h1 className="text-4xl md:text-5xl flex gap-4 items-center font-bold text-primary">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl flex gap-4 items-center font-bold text-primary">
                     {map.name}
                 </h1>
-                <p className="max-w-2xl text-lg md:text-xl opacity-75">
+                <p className="max-w-sm xs:max-w-md md:max-w-2xl sm:text-lg lg:text-xl opacity-75">
                     {map.description}
                 </p>
 
                 {/* Uploader */}
-                <span className="opacity-75">
+                <span className="text-sm sm:text-base opacity-60">
                     Uploaded by {map.uploadedBy} -{" "}
                     {DateTime.fromISO(
                         map.uploadedAt.toISOString()
@@ -69,8 +71,21 @@ const MapPage = async ({
             </div>
 
             {/* Content */}
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-3.5">
                 <MapPreviewCarousel server={server} map={map} />
+                <div className="px-14 flex justify-between items-center">
+                    {/* Download */}
+                    <FileDownloadButton
+                        className="bg-primary/75"
+                        url={`https://s3.rainnny.club/mcmap-maps/${server._id}/${map._id}/map.zip`}
+                        fileName={`${map.name}.zip`}
+                    >
+                        Download Map
+                    </FileDownloadButton>
+
+                    {/* Stats */}
+                    <MapStats className="text-base" map={map} fullStats />
+                </div>
             </div>
         </main>
     );

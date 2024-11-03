@@ -46,6 +46,9 @@ class MinecraftMapInternal {
     @prop()
     public uploadedAt: Date = new Date();
 
+    @prop()
+    public size!: number;
+
     /**
      * Get the URL to download this map.
      *

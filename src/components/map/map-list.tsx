@@ -10,6 +10,7 @@ import { MinecraftServer } from "@/models/server";
 import { useMapsFilter } from "@/providers/maps-filter-provider";
 import { DateTime } from "luxon";
 import ServerPlatformLogo from "@/components/server/server-platform-logo";
+import MapStats from "@/components/map/map-stats";
 
 const MapList = ({
     server,
@@ -90,10 +91,8 @@ const MapList = ({
                                     </span>
                                 </p>
 
-                                {/* TODO: Stats */}
-                                <div className="flex gap-3 items-center justify-end text-sm opacity-65">
-                                    <span>0 Downloads</span>
-                                </div>
+                                {/* Stats */}
+                                <MapStats map={map} />
                             </div>
                         </div>
                     </Link>

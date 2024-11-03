@@ -1,11 +1,13 @@
 import { ScreenSize } from "@/types/screen-size";
 import { useEffect, useState } from "react";
 
-type ScreenSizeProps = {
-    size: ScreenSize;
-};
-
-export const useIsScreenSize = ({ size }: ScreenSizeProps) => {
+/**
+ * A hook to check if the screen
+ * size is at least the given size.
+ *
+ * @param size the screen size to check
+ */
+export const useIsScreenSize = ({ size }: { size: ScreenSize }) => {
     const [isScreenSize, setIsScreenSize] = useState<boolean>();
 
     useEffect(() => {

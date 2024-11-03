@@ -21,7 +21,11 @@ const ClearFilters = (): ReactElement | undefined => {
         return undefined;
     }
     return (
-        <Button className="w-full" variant="destructive" onClick={clearFilters}>
+        <Button
+            className="mt-auto"
+            variant="destructive"
+            onClick={clearFilters}
+        >
             Clear Filters
         </Button>
     );
