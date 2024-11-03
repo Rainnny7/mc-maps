@@ -8,6 +8,7 @@ import { isActionError, ServerActionResponse } from "@/types/error";
 import { ArrowRightToLine, LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { toast } from "sonner";
 
 const AuthPage = (): ReactElement => {
     const router: AppRouterInstance = useRouter();
@@ -28,6 +29,7 @@ const AuthPage = (): ReactElement => {
                         isActionError(response) ? response.error : undefined
                     );
                     if (!isError) {
+                        toast.success("Welcome back! Redirecting you...");
                         router.push("/admin");
                     }
                     setLoggingIn(false);

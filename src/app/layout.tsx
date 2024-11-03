@@ -5,6 +5,7 @@ import { ReactElement, ReactNode } from "react";
 import Navbar from "@/components/navbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { MapsFilterProvider } from "@/providers/maps-filter-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
@@ -57,6 +58,7 @@ const RootLayout = async ({
                         {children}
                     </div>
                 </MapsFilterProvider>
+                <Toaster />
             </TooltipProvider>
         </body>
     </html>
