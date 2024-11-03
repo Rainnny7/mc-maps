@@ -73,7 +73,7 @@ const MapPage = async ({
             {/* Content */}
             <div className="flex flex-col gap-3.5">
                 <MapPreviewCarousel server={server} map={map} />
-                <div className="px-14 flex justify-between items-center">
+                <div className="px-14 flex flex-col gap-2.5 xs:flex-row justify-between items-center">
                     {/* Download */}
                     <FileDownloadButton
                         className="bg-primary/75"
