@@ -1,5 +1,5 @@
-import { ScreenSize } from "@/types/screen-size";
-import { useEffect, useState } from "react";
+import {ScreenSize} from "@/types/screen-size";
+import {useEffect, useState} from "react";
 
 /**
  * A hook to check if the screen

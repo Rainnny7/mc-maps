@@ -1,10 +1,6 @@
-import { ReactElement, ReactNode } from "react";
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { SIDE_OPTIONS } from "@radix-ui/react-popper";
+import {ReactElement, ReactNode} from "react";
+import {Tooltip, TooltipContent, TooltipTrigger,} from "@/components/ui/tooltip";
+import {SIDE_OPTIONS} from "@radix-ui/react-popper";
 
 /**
  * The props for a simple tooltip.

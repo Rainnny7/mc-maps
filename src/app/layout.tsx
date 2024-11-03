@@ -6,6 +6,7 @@ import Navbar from "@/components/navbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { MapsFilterProvider } from "@/providers/maps-filter-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { useIsAuthed } from "@/lib/auth";
 
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
@@ -46,21 +47,25 @@ const RootLayout = async ({
     children,
 }: Readonly<{
     children: ReactNode;
-}>): Promise<ReactElement> => (
-    <html lang="en" suppressHydrationWarning>
-        <body
-            className={`px-3 xs:px-5 w-screen min-h-screen flex flex-col items-center bg-gradient-to-b from-background via-[#141414] to-background ${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased select-none`}
-        >
-            <TooltipProvider delayDuration={100}>
-                <Navbar />
-                <MapsFilterProvider>
-                    <div className="w-full h-[calc(100vh-var(--navbar-height))] max-w-screen-xl">
-                        {children}
-                    </div>
-                </MapsFilterProvider>
-                <Toaster />
-            </TooltipProvider>
-        </body>
-    </html>
-);
+}>): Promise<ReactElement> => {
+    const isAuthed: boolean = await useIsAuthed();
+    return (
+        <html lang="en">
+            <body
+                className={`px-3 xs:px-5 w-screen min-h-screen flex flex-col items-center bg-gradient-to-b from-background via-[#141414] to-background ${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased select-none`}
+                suppressHydrationWarning
+            >
+                <TooltipProvider delayDuration={100}>
+                    <Navbar isAuthed={isAuthed} />
+                    <MapsFilterProvider>
+                        <div className="w-full h-[calc(100vh-var(--navbar-height))] max-w-screen-xl">
+                            {children}
+                        </div>
+                    </MapsFilterProvider>
+                    <Toaster />
+                </TooltipProvider>
+            </body>
+        </html>
+    );
+};
 export default RootLayout;

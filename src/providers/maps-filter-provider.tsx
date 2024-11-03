@@ -1,13 +1,7 @@
 "use client";
 
-import {
-    createContext,
-    ReactElement,
-    ReactNode,
-    useContext,
-    useState,
-} from "react";
-import { ServerPlatform } from "@/types/server-platform";
+import {createContext, ReactElement, ReactNode, useContext, useState,} from "react";
+import {ServerPlatform} from "@/types/server-platform";
 
 /**
  * The props for the filter context.
