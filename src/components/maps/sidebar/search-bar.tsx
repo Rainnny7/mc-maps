@@ -14,6 +14,7 @@ const SearchBar = (): ReactElement => {
                 className="pl-7"
                 type="search"
                 placeholder="Search Query..."
+                maxLength={100}
                 value={searchQuery}
                 onChange={(event) => search(event.target.value)}
             />

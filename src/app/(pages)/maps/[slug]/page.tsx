@@ -36,7 +36,7 @@ const MapsPage = async ({
     maps?.forEach((map) => mapObjects.push(map.toObject()));
 
     return (
-        <main className="mt-10 flex flex-col gap-7">
+        <main className="relative mt-10 flex flex-col gap-7">
             {/* Header */}
             <div className="flex flex-col gap-1 text-center items-center">
                 {/* Go Back */}
