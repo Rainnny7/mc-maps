@@ -8,6 +8,8 @@ import {
 } from "react";
 import { Button } from "@/components/ui/button";
 import { Download, FileCheck2, LoaderCircle } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
 
 type FileDownloadButtonProps = ComponentPropsWithoutRef<typeof Button> & {
     /**
@@ -27,6 +29,7 @@ type FileDownloadButtonProps = ComponentPropsWithoutRef<typeof Button> & {
 };
 
 const FileDownloadButton = ({
+    className,
     url,
     fileName,
     children,
@@ -41,32 +44,34 @@ const FileDownloadButton = ({
         try {
             setDownloadStatus("downloading");
 
-            const response = await fetch(url);
-            const contentLength = response.headers.get("content-length");
-            const total = parseInt(contentLength ?? "0", 10);
-
+            const response: Response = await fetch(url);
+            const total: number = parseInt(
+                response.headers.get("content-length") ?? "0",
+                10
+            );
             const reader = response.body?.getReader();
-            if (!reader) throw new Error("Failed to initialize download");
+            if (!reader) {
+                throw new Error("Failed to initialize download");
+            }
 
             let receivedLength = 0;
             const chunks: Uint8Array[] = [];
-
             while (true) {
                 const { done, value } = await reader.read();
-                if (done) break;
-
+                if (done) {
+                    break;
+                }
                 chunks.push(value);
                 receivedLength += value.length;
-
                 if (total) {
                     setProgress(Math.round((receivedLength / total) * 100));
                 }
             }
+            const objectUrl: string = window.URL.createObjectURL(
+                new Blob(chunks)
+            );
+            const link: HTMLAnchorElement = document.createElement("a");
 
-            const blob = new Blob(chunks);
-            const objectUrl = window.URL.createObjectURL(blob);
-
-            const link = document.createElement("a");
             link.href = objectUrl;
             link.download = fileName;
             document.body.appendChild(link);
@@ -83,7 +88,11 @@ const FileDownloadButton = ({
         }
     };
     return (
-        <Button onClick={downloadFile} {...props}>
+        <Button
+            className={cn("relative overflow-hidden", className)}
+            onClick={downloadFile}
+            {...props}
+        >
             {/* Download Status */}
             {downloadStatus === "idle" ? (
                 <Download className="size-5" />
@@ -95,6 +104,14 @@ const FileDownloadButton = ({
 
             {/* Trigger */}
             {children}
+
+            {/* Progress Bar */}
+            {downloadStatus === "downloading" && (
+                <Progress
+                    className="absolute bottom-0 h-0.5 rounded-xl"
+                    value={progress}
+                />
+            )}
         </Button>
     );
 };
