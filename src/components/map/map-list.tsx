@@ -1,48 +1,68 @@
+"use client";
+
 import { ReactElement } from "react";
-import { MinecraftMapDocument, MinecraftMapModel } from "@/models/map";
-import { MinecraftServerDocument } from "@/models/server";
+import { MinecraftMap } from "@/models/map";
 import Link from "next/link";
 import Image from "next/image";
 import { ServerPlatform } from "@/types/server-platform";
 import SimpleTooltip from "@/components/simple-tooltip";
 import { capitalize } from "@/lib/string";
+import { MinecraftServer } from "@/models/server";
+import { useMapsFilter } from "@/providers/maps-filter-provider";
+import { DateTime } from "luxon";
 
-const MapList = async ({
+const MapList = ({
     server,
+    maps,
 }: {
-    server: MinecraftServerDocument;
-}): Promise<ReactElement> => {
-    const maps: MinecraftMapDocument[] | null = await MinecraftMapModel.find({
-        owner: server.id,
+    server: MinecraftServer;
+    maps: MinecraftMap[];
+}): ReactElement => {
+    const { filteredPlatform, filteredTags, filteredYears } = useMapsFilter();
+
+    // Filter the maps based on the user's filters
+    maps = maps.filter((map: MinecraftMap) => {
+        const platformMatch =
+            !filteredPlatform || map.platform === filteredPlatform;
+        const tagsMatch =
+            !filteredTags ||
+            filteredTags.every((tag: string) => map.tags.includes(tag));
+        const yearsMatch =
+            !filteredYears ||
+            (map.year >= filteredYears[0] && map.year <= filteredYears[1]);
+        return platformMatch && tagsMatch && yearsMatch;
     });
-    return maps?.length < 1 ? (
-        <span className="text-xl text-red-500">This server has no maps ):</span>
+
+    return maps.length < 1 ? (
+        <span className="text-lg text-red-500">
+            No maps found with your filters ):
+        </span>
     ) : (
         // Maps
         <div className="flex gap-3 items-center">
-            {maps.map((map: MinecraftMapDocument) => (
-                <SimpleTooltip key={map.id} content="Click to view">
+            {maps.map((map: MinecraftMap) => (
+                <SimpleTooltip key={map._id} content="Click to view">
                     <Link
-                        className="group relative h-44 border border-muted rounded-xl overflow-hidden"
-                        href={`/map/${server.id}/${map.id}`}
+                        className="group relative h-48 border border-muted rounded-xl overflow-hidden"
+                        href={`/map/${server._id}/${map._id}`}
                         draggable={false}
                     >
                         {/* Thumbnail */}
                         <Image
                             className="rounded-xl group-hover:scale-[1.02] transition-all transform-gpu"
-                            src={`https://s3.rainnny.club/mcmap-maps/${server.id}/${map.id}/previews/1.png`}
+                            src={`https://s3.rainnny.club/mcmap-maps/${server._id}/${map._id}/previews/1.png`}
                             alt={`Thumbnail for the map ${map.name}`}
-                            width={332}
-                            height={332}
+                            width={360}
+                            height={360}
                             draggable={false}
                         />
 
                         {/* Info */}
-                        <div className="absolute inset-x-0 -bottom-1 px-2.5 py-1 pb-2 group-hover:py-2 group-hover:pb-3 flex justify-between bg-zinc-900/90 rounded-b-xl transition-all transform-gpu">
+                        <div className="absolute inset-x-0 -bottom-1 px-2.5 py-1 pb-2 group-hover:py-2 group-hover:pb-3 flex flex-col bg-zinc-900/90 rounded-b-xl transition-all transform-gpu">
                             {/* Platform & Name */}
-                            <div className="flex gap-2 items-center">
+                            <h1 className="flex gap-1.5 items-center font-semibold text-primary">
                                 <SimpleTooltip
-                                    content={`${capitalize(map.platform)} Edition Map`}
+                                    content={`${capitalize(map.platform)} Edition`}
                                 >
                                     <Image
                                         src={`/media/blocks/${map.platform === ServerPlatform.Java ? "grass" : "bedrock"}.png`}
@@ -51,9 +71,28 @@ const MapList = async ({
                                         height={20}
                                     />
                                 </SimpleTooltip>
-                                <h1 className="text-sm font-semibold">
-                                    {map.name}
-                                </h1>
+                                <span>{map.name}</span>
+                            </h1>
+
+                            {/* Uploader & Stats */}
+                            <div className="flex justify-between items-center">
+                                {/* Uploader */}
+                                <p className="flex gap-1.5 items-center text-sm">
+                                    <span className="font-semibold">
+                                        {map.uploadedBy}
+                                    </span>
+                                    🞄
+                                    <span>
+                                        {DateTime.fromISO(
+                                            map.uploadedAt.toISOString()
+                                        ).toRelative()}
+                                    </span>
+                                </p>
+
+                                {/* Stats */}
+                                <div className="flex gap-3 items-center justify-end text-sm opacity-65">
+                                    <span>0 Downloads</span>
+                                </div>
                             </div>
                         </div>
                     </Link>

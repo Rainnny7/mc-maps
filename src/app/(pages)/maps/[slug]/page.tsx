@@ -2,10 +2,16 @@ import { ReactElement } from "react";
 import { connectMongo } from "@/lib/mongo";
 import { MinecraftServerDocument, MinecraftServerModel } from "@/models/server";
 import { notFound } from "next/navigation";
-import ServerLogo from "@/components/server/server-logo";
 import MapList from "@/components/map/map-list";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
+import {
+    MinecraftMap,
+    MinecraftMapDocument,
+    MinecraftMapModel,
+} from "@/models/map";
+import ServerLogo from "@/components/server/server-logo";
+import MapsSidebar from "@/components/maps/sidebar";
 
 const MapsPage = async ({
     params,
@@ -15,13 +21,22 @@ const MapsPage = async ({
     const slug = (await params).slug;
     await connectMongo();
     const server: MinecraftServerDocument | null =
-        await MinecraftServerModel.findOne({ _id: slug });
+        await MinecraftServerModel.findOne({
+            _id: slug,
+        });
     if (!server) {
         notFound();
     }
+    const maps: MinecraftMapDocument[] | null = await MinecraftMapModel.find({
+        owner: server._id,
+    });
+
+    // Convert the map documents into an object so we can pass them to a client component
+    const mapObjects: MinecraftMap[] = [];
+    maps?.forEach((map) => mapObjects.push(map.toObject()));
 
     return (
-        <main className="mt-20 flex flex-col gap-7 items-center">
+        <main className="mt-10 flex flex-col gap-7">
             {/* Header */}
             <div className="flex flex-col gap-1 text-center items-center">
                 {/* Go Back */}
@@ -44,7 +59,10 @@ const MapsPage = async ({
             </div>
 
             {/* Content */}
-            <MapList server={server} />
+            <div className="h-full flex gap-4 justify-center sm:justify-start items-start">
+                <MapsSidebar maps={mapObjects} />
+                <MapList server={server.toObject()} maps={mapObjects} />
+            </div>
         </main>
     );
 };

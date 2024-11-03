@@ -4,6 +4,7 @@ import "./style/globals.css";
 import { ReactElement, ReactNode } from "react";
 import Navbar from "@/components/navbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { MapsFilterProvider } from "@/providers/maps-filter-provider";
 
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
@@ -51,9 +52,11 @@ const RootLayout = async ({
         >
             <TooltipProvider delayDuration={100}>
                 <Navbar />
-                <div className="w-full h-[calc(100vh-var(--navbar-height))] max-w-screen-xl">
-                    {children}
-                </div>
+                <MapsFilterProvider>
+                    <div className="w-full h-[calc(100vh-var(--navbar-height))] max-w-screen-xl">
+                        {children}
+                    </div>
+                </MapsFilterProvider>
             </TooltipProvider>
         </body>
     </html>

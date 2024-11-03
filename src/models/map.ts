@@ -15,9 +15,9 @@ import { s3Client } from "@/lib/minio";
     options: { customName: "MinecraftMap", allowMixed: Severity.ALLOW },
     schemaOptions: { collection: "maps" },
 })
-class MinecraftMap {
+class MinecraftMapInternal {
     @prop()
-    private _id!: string;
+    public _id!: string;
 
     @prop()
     public name!: string;
@@ -47,13 +47,6 @@ class MinecraftMap {
     public uploadedAt: Date = new Date();
 
     /**
-     * Get the ID of this map.
-     */
-    get id(): string {
-        return this._id;
-    }
-
-    /**
      * Get the URL to download this map.
      *
      * @param server the server the map belongs to
@@ -62,7 +55,7 @@ class MinecraftMap {
         this: MinecraftMapDocument,
         server: MinecraftServerDocument
     ): string {
-        return `https://s3.rainnny.club/mcmap-maps/${server.id}/${this._id}/map.zip`;
+        return `https://s3.rainnny.club/mcmap-maps/${server._id}/${this._id}/map.zip`;
     }
 
     public async getPreviews(
@@ -74,7 +67,7 @@ class MinecraftMap {
 
             const previewsStream = s3Client.listObjectsV2(
                 "mcmap-maps",
-                `${server.id}/${this._id}/previews/`,
+                `${server._id}/${this._id}/previews/`,
                 false
             );
             previewsStream.on("data", (item: BucketItem) => items.push(item));
@@ -84,6 +77,8 @@ class MinecraftMap {
     }
 }
 
-export type MinecraftMapDocument = MinecraftMap & Document;
-export const MinecraftMapModel: ReturnModelType<typeof MinecraftMap> =
-    (mongoose.models.MinecraftMap as any) || getModelForClass(MinecraftMap);
+export type MinecraftMapDocument = MinecraftMapInternal & mongoose.Document;
+export const MinecraftMapModel: ReturnModelType<typeof MinecraftMapInternal> =
+    (mongoose.models.MinecraftMap as any) ||
+    getModelForClass(MinecraftMapInternal);
+export type MinecraftMap = InstanceType<typeof MinecraftMapInternal>;

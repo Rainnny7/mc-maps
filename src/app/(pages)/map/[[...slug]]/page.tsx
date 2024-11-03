@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import MapPreviewCarousel from "@/components/map/map-preview-carousel";
 import { DateTime } from "luxon";
+import ServerLogo from "@/components/server/server-logo";
 
 const MapPage = async ({
     params,
@@ -25,7 +26,7 @@ const MapPage = async ({
         !server ||
         !(map = await MinecraftMapModel.findOne({
             _id: slug[1],
-            owner: server.id,
+            owner: server._id,
         }))
     ) {
         notFound();
@@ -37,12 +38,18 @@ const MapPage = async ({
             <div className="flex flex-col gap-1 text-center items-center">
                 {/* Go Back */}
                 <Link
-                    className="group self-start pb-5 flex gap-0.5 items-center opacity-65 hover:opacity-90 transition-all transform-gpu"
-                    href="/browse"
+                    className="group self-start pb-5 flex gap-1.5 items-center"
+                    href={`/maps/${server._id}`}
                     draggable={false}
                 >
-                    <ChevronLeft className="size-5 group-hover:-translate-x-0.5 transition-all transform-gpu" />
-                    <span>Back to Maps</span>
+                    <div className="flex gap-0.5 items-center opacity-75 group-hover:opacity-90 transition-all transform-gpu">
+                        <ChevronLeft className="size-5 group-hover:-translate-x-0.5 transition-all transform-gpu" />
+                        <span>Back to {server.name}</span>
+                    </div>
+                    <ServerLogo
+                        className="size-6 opacity-90 group-hover:opacity-100 transition-all transform-gpu"
+                        server={server}
+                    />
                 </Link>
 
                 <h1 className="text-4xl md:text-5xl flex gap-4 items-center font-bold text-primary">

@@ -13,9 +13,9 @@ const ServerList = async (): Promise<ReactElement> => {
         <>
             {servers.map((server: MinecraftServerDocument) => (
                 <Link
-                    key={server.id}
-                    className="group relative h-20 rounded-xl hover:opacity-75 transition-all transform-gpu overflow-hidden"
-                    href={`/maps/${server.id}`}
+                    key={server._id}
+                    className="group relative h-20 rounded-xl border border-muted/30 hover:opacity-75 transition-all transform-gpu overflow-hidden"
+                    href={`/maps/${server._id}`}
                     draggable={false}
                 >
                     <Image

@@ -11,9 +11,9 @@ import mongoose from "mongoose";
     options: { customName: "MinecraftServer", allowMixed: Severity.ALLOW },
     schemaOptions: { collection: "servers" },
 })
-class MinecraftServer {
+class MinecraftServerInternal {
     @prop()
-    private _id!: string;
+    public _id!: string;
 
     @prop()
     public name!: string;
@@ -22,13 +22,6 @@ class MinecraftServer {
     public socials?: {
         [key: string]: string;
     };
-
-    /**
-     * Get the ID of this server.
-     */
-    get id(): string {
-        return this._id;
-    }
 
     /**
      * Get the logo of this server.
@@ -45,7 +38,11 @@ class MinecraftServer {
     }
 }
 
-export type MinecraftServerDocument = MinecraftServer & Document;
-export const MinecraftServerModel: ReturnModelType<typeof MinecraftServer> =
+export type MinecraftServerDocument = MinecraftServerInternal &
+    mongoose.Document;
+export const MinecraftServerModel: ReturnModelType<
+    typeof MinecraftServerInternal
+> =
     (mongoose.models.MinecraftServer as any) ||
-    getModelForClass(MinecraftServer);
+    getModelForClass(MinecraftServerInternal);
+export type MinecraftServer = InstanceType<typeof MinecraftServerInternal>;
