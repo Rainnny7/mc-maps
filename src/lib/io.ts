@@ -1,3 +1,8 @@
+/**
+ * Format the given bytes into a human-readable string.
+ *
+ * @param bytes the bytes to format
+ */
 export const formatFileSize = (bytes: number): string => {
     const units = ["B", "KB", "MB", "GB", "TB"];
     let size = bytes;
