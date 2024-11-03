@@ -46,7 +46,7 @@ const FileDownloadButton = ({
 
             const response: Response = await fetch(url);
             const total: number = parseInt(
-                response.headers.get("content-length") ?? "0",
+                response.headers.get("Content-Length") ?? "0",
                 10
             );
             const reader = response.body?.getReader();

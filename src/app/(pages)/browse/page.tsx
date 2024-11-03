@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 const BrowseMapsPage = (): ReactElement => (
-    <main className="mt-32 flex flex-col gap-7 items-center">
+    <main className="mt-20 flex flex-col gap-7 items-center">
         {/* Header */}
         <div className="flex flex-col gap-1 text-center items-center">
             <h1 className="text-4xl xs:text-5xl font-bold text-primary">
