@@ -8,12 +8,7 @@ import { ChevronLeft } from "lucide-react";
 import MapPreviewCarousel from "@/components/map/map-preview-carousel";
 import { DateTime } from "luxon";
 import ServerLogo from "@/components/server/server-logo";
-import MapDownloadButton from "@/components/map/map-download-button";
-import MapStats from "@/components/map/map-stats";
-import { capitalize } from "@/lib/string";
-import ServerPlatformLogo from "@/components/server/server-platform-logo";
-import SimpleTooltip from "@/components/simple-tooltip";
-import { downloadMapAction } from "@/actions/download";
+import MapDetails from "@/components/map/map-details";
 
 const MapPage = async ({
     params,
@@ -77,30 +72,7 @@ const MapPage = async ({
             {/* Content */}
             <div className="flex flex-col gap-3.5">
                 <MapPreviewCarousel server={server} map={map} />
-                <div className="px-14 flex flex-col gap-3 sm:flex-row justify-between items-center">
-                    {/* Platform & Download */}
-                    <div className="flex gap-4 items-center">
-                        {/* Platform */}
-                        <SimpleTooltip
-                            content={`${capitalize(map.platform)} Edition`}
-                        >
-                            <ServerPlatformLogo
-                                className="size-7"
-                                platform={map.platform}
-                            />
-                        </SimpleTooltip>
-
-                        {/* Download */}
-                        <MapDownloadButton
-                            className="bg-primary/75"
-                            server={server.toObject()}
-                            map={map.toObject()}
-                        />
-                    </div>
-
-                    {/* Stats */}
-                    <MapStats className="text-base" map={map} fullStats />
-                </div>
+                <MapDetails server={server.toObject()} map={map.toObject()} />
             </div>
         </main>
     );

@@ -6,11 +6,13 @@ import { formatFileSize } from "@/lib/io";
 type MapStatsProps = {
     className?: string | undefined;
     map: MinecraftMap;
+    downloads?: number;
     fullStats?: boolean;
 };
 
 const MapStats = ({
     map,
+    downloads,
     className,
     fullStats,
 }: MapStatsProps): ReactElement => {
@@ -24,7 +26,8 @@ const MapStats = ({
         >
             {fullStats && <span>{mapSize}</span>}
             <span>
-                {new Intl.NumberFormat().format(map.downloads)} Downloads
+                {new Intl.NumberFormat().format(downloads ?? map.downloads)}{" "}
+                Downloads
             </span>
         </div>
     );

@@ -19,12 +19,18 @@ type MapDownloadButtonProps = ComponentPropsWithoutRef<typeof Button> & {
      * The map to download.
      */
     map: MinecraftMap;
+
+    /**
+     * The function to invoke when incrementing the downloads state.
+     */
+    incrementDownloads: () => void;
 };
 
 const MapDownloadButton = ({
     className,
     server,
     map,
+    incrementDownloads,
     ...props
 }: MapDownloadButtonProps): ReactElement => {
     const [downloadStatus, setDownloadStatus] = useState<
@@ -37,6 +43,7 @@ const MapDownloadButton = ({
             setDownloadStatus("downloading");
 
             await downloadMapAction(map);
+            incrementDownloads();
             const response: Response = await fetch(
                 `https://s3.rainnny.club/mcmap-maps/${server._id}/${map._id}/map.zip`
             );
