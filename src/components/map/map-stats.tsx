@@ -23,7 +23,9 @@ const MapStats = ({
             )}
         >
             {fullStats && <span>{mapSize}</span>}
-            <span>0 Downloads</span>
+            <span>
+                {new Intl.NumberFormat().format(map.downloads)} Downloads
+            </span>
         </div>
     );
 };

@@ -58,7 +58,7 @@ const MapsSidebar = ({ maps }: { maps: MinecraftMap[] }): ReactElement => {
 };
 
 const SidebarContent = ({ maps }: { maps: MinecraftMap[] }) => (
-    <div className="w-full sm:w-48 lg:w-60 p-2.5 lg:p-3.5 flex flex-col gap-2.5 rounded-xl bg-background/75 sm:border border-muted transition-all transform-gpu overflow-y-auto">
+    <div className="w-full h-full sm:w-48 lg:w-60 p-2.5 lg:p-3.5 flex flex-col gap-2.5 rounded-xl bg-background/75 sm:border border-muted transition-all transform-gpu overflow-y-auto">
         <SearchBar />
         <Separator className="my-0.5" />
         <PlatformSelection />

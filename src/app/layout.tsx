@@ -6,7 +6,9 @@ import Navbar from "@/components/navbar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { MapsFilterProvider } from "@/providers/maps-filter-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { getPathname } from "@nimpl/getters/get-pathname";
 import { useIsAuthed } from "@/lib/auth";
+import { cn } from "@/lib/utils";
 
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
@@ -48,6 +50,7 @@ const RootLayout = async ({
 }: Readonly<{
     children: ReactNode;
 }>): Promise<ReactElement> => {
+    const path: string | null = getPathname();
     const isAuthed: boolean = await useIsAuthed();
     return (
         <html lang="en">
@@ -58,7 +61,12 @@ const RootLayout = async ({
                 <TooltipProvider delayDuration={100}>
                     <Navbar isAuthed={isAuthed} />
                     <MapsFilterProvider>
-                        <div className="w-full h-[calc(100vh-var(--navbar-height))] max-w-screen-xl">
+                        <div
+                            className={cn(
+                                "w-full h-[calc(100vh-var(--navbar-height))]",
+                                !path?.startsWith("/admin") && "max-w-screen-xl"
+                            )}
+                        >
                             {children}
                         </div>
                     </MapsFilterProvider>

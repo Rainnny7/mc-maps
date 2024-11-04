@@ -1,40 +1,32 @@
 "use client";
 
-import {
-    ComponentPropsWithoutRef,
-    ReactElement,
-    ReactNode,
-    useState,
-} from "react";
+import { ComponentPropsWithoutRef, ReactElement, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Download, FileCheck2, LoaderCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { MinecraftMap } from "@/models/map";
+import { downloadMapAction } from "@/actions/download";
+import { MinecraftServer } from "@/models/server";
 
-type FileDownloadButtonProps = ComponentPropsWithoutRef<typeof Button> & {
+type MapDownloadButtonProps = ComponentPropsWithoutRef<typeof Button> & {
     /**
-     * The URL of the file to download.
+     * The server that owns the map.
      */
-    url: string;
-
-    /**
-     * The name of the file to download.
-     */
-    fileName: string;
+    server: MinecraftServer;
 
     /**
-     * The trigger to download the file.
+     * The map to download.
      */
-    children: ReactNode;
+    map: MinecraftMap;
 };
 
-const FileDownloadButton = ({
+const MapDownloadButton = ({
     className,
-    url,
-    fileName,
-    children,
+    server,
+    map,
     ...props
-}: FileDownloadButtonProps): ReactElement => {
+}: MapDownloadButtonProps): ReactElement => {
     const [downloadStatus, setDownloadStatus] = useState<
         "idle" | "downloading" | "complete"
     >("idle");
@@ -44,7 +36,10 @@ const FileDownloadButton = ({
         try {
             setDownloadStatus("downloading");
 
-            const response: Response = await fetch(url);
+            await downloadMapAction(map);
+            const response: Response = await fetch(
+                `https://s3.rainnny.club/mcmap-maps/${server._id}/${map._id}/map.zip`
+            );
             const total: number = parseInt(
                 response.headers.get("Content-Length") ?? "0",
                 10
@@ -73,7 +68,7 @@ const FileDownloadButton = ({
             const link: HTMLAnchorElement = document.createElement("a");
 
             link.href = objectUrl;
-            link.download = fileName;
+            link.download = `${map.name}.zip`;
             document.body.appendChild(link);
             link.click();
 
@@ -91,6 +86,7 @@ const FileDownloadButton = ({
         <Button
             className={cn("relative overflow-hidden", className)}
             onClick={downloadFile}
+            disabled={downloadStatus !== "idle"}
             {...props}
         >
             {/* Download Status */}
@@ -102,8 +98,7 @@ const FileDownloadButton = ({
                 <FileCheck2 className="size-5" />
             )}
 
-            {/* Trigger */}
-            {children}
+            <span>Download Map</span>
 
             {/* Progress Bar */}
             {downloadStatus === "downloading" && (
@@ -115,4 +110,4 @@ const FileDownloadButton = ({
         </Button>
     );
 };
-export default FileDownloadButton;
+export default MapDownloadButton;

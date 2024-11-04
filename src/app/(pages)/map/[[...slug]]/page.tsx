@@ -8,11 +8,12 @@ import { ChevronLeft } from "lucide-react";
 import MapPreviewCarousel from "@/components/map/map-preview-carousel";
 import { DateTime } from "luxon";
 import ServerLogo from "@/components/server/server-logo";
-import FileDownloadButton from "@/components/file-download-button";
+import MapDownloadButton from "@/components/map/map-download-button";
 import MapStats from "@/components/map/map-stats";
 import { capitalize } from "@/lib/string";
 import ServerPlatformLogo from "@/components/server/server-platform-logo";
 import SimpleTooltip from "@/components/simple-tooltip";
+import { downloadMapAction } from "@/actions/download";
 
 const MapPage = async ({
     params,
@@ -90,13 +91,11 @@ const MapPage = async ({
                         </SimpleTooltip>
 
                         {/* Download */}
-                        <FileDownloadButton
+                        <MapDownloadButton
                             className="bg-primary/75"
-                            url={`https://s3.rainnny.club/mcmap-maps/${server._id}/${map._id}/map.zip`}
-                            fileName={`${map.name}.zip`}
-                        >
-                            Download Map
-                        </FileDownloadButton>
+                            server={server.toObject()}
+                            map={map.toObject()}
+                        />
                     </div>
 
                     {/* Stats */}
